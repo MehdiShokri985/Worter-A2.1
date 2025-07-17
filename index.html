@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پلی لیست جملات فارسی و آلمانی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif; /* فونت محلی، چون Vazir مشکل CORS داشت */
+        }
+
+        body {
+            background-color: #1a252f;
+            color: #f0f0f0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffc107;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+        }
+
+        .playlist {
+            display: grid;
+            gap: 15px;
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr 150px;
+            align-items: center;
+            background-color: #2c3e50;
+            padding: 15px;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .row:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .number {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .persian, .german {
+            padding: 0 15px;
+            font-size: 1.1rem;
+        }
+
+        .audio-player {
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .row {
+                grid-template-columns: 60px 1fr 120px;
+                gap: 10px;
+            }
+
+            .german {
+                display: none;
+            }
+
+            .persian {
+                font-size: 1rem;
+            }
+
+            .audio-player {
+                width: 100px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .row {
+                grid-template-columns: 50px 1fr 100px;
+            }
+
+            .number {
+                font-size: 1rem;
+            }
+
+            .audio-player {
+                width: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>پلی لیست جملات فارسی و آلمانی</h1>
+        <div class="playlist" id="playlist">
+            <!-- Rows will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        const sentences = [
+            { id: 1, persian: "زندگی روزمره - زندگی روزمره", german: "der Alltag - der Alltag", audio: "1_de.mp3" },
+            { id: 2, persian: "من زندگی روزمره در آلمان را دوست دارم.", german: "Ich mag den Alltag in Deutschland.", audio: "2_de.mp3" },
+            { id: 3, persian: "از خواب بیدار شده - از خواب بیدار شده", german: "aufgestanden - aufgestanden", audio: "3_de.mp3" },
+            { id: 4, persian: "من امروز صبح زود از خواب بیدار شدم.", german: "Ich bin heute früh aufgestanden.", audio: "4_de.mp3" },
+            { id: 5, persian: "شغل - شغل", german: "der Beruf - der Beruf", audio: "5_de.mp3" },
+            { id: 6, persian: "شغلم معلم است.", german: "Mein Beruf ist Lehrer.", audio: "6_de.mp3" },
+            { id: 7, persian: "خانه آلمانی - خانه آلمانی", german: "das Deutsche Haus - das Deutsche Haus", audio: "7_de.mp3" },
+            { id: 8, persian: "من در خانه آلمانی زندگی می‌کنم.", german: "Ich wohne im Deutschen Haus.", audio: "8_de.mp3" },
+            { id: 9, persian: "بزرگ شده - بزرگ شده", german: "aufgewachsen - aufgewachsen", audio: "9_de.mp3" },
+            { id: 10, persian: "من در برلین بزرگ شده‌ام.", german: "Ich bin in Berlin aufgewachsen.", audio: "10_de.mp3" },
+            { id: 11, persian: "به معنای - به معنای", german: "bedeutet - bedeutet", audio: "11_de.mp3" },
+            { id: 12, persian: "این کلمه به معنای «مهم» است.", german: "Das Wort bedeutet „wichtig“.", audio: "12_de.mp3" },
+            { id: 13, persian: "مهاجرت کردن - مهاجرت کردن", german: "auswandern - auswandern", audio: "13_de.mp3" },
+            { id: 14, persian: "می‌خواهم به کانادا مهاجرت کنم.", german: "Ich möchte nach Kanada auswandern.", audio: "14_de.mp3" },
+            { id: 15, persian: "خارج از کشور - خارج از کشور", german: "das Ausland - das Ausland", audio: "15_de.mp3" },
+            { id: 16, persian: "من اغلب به خارج از کشور سفر می‌کنم.", german: "Ich reise oft ins Ausland.", audio: "16_de.mp3" },
+            { id: 17, persian: "دیپلم - دیپلم", german: "das Abitur - das Abitur", audio: "17_de.mp3" },
+            { id: 18, persian: "من دیپلم گرفته‌ام.", german: "Ich habe das Abitur gemacht.", audio: "18_de.mp3" },
+            { id: 19, persian: "دریافت کردن - دریافت کردن", german: "bekommen - bekommen", audio: "19_de.mp3" },
+            { id: 20, persian: "من یک نامه دریافت کردم.", german: "Ich habe einen Brief bekommen.", audio: "20_de.mp3" },
+            { id: 21, persian: "چاپ شده - چاپ شده", german: "ausgedruckt - ausgedruckt", audio: "21_de.mp3" },
+            { id: 22, persian: "من سند را چاپ کردم.", german: "Ich habe das Dokument ausgedruckt.", audio: "22_de.mp3" },
+            { id: 23, persian: "آموزش - آموزش", german: "die Ausbildung - die Ausbildung", audio: "23_de.mp3" },
+            { id: 24, persian: "آموزش من در سپتامبر شروع می‌شود.", german: "Meine Ausbildung beginnt im September.", audio: "24_de.mp3" },
+            { id: 25, persian: "مدیریت دفتری - مدیریت دفتری", german: "das Büromanagement - das Büromanagement", audio: "25_de.mp3" },
+            { id: 26, persian: "من مدیریت دفتری می‌خوانم.", german: "Ich studiere Büromanagement.", audio: "26_de.mp3" },
+            { id: 27, persian: "شروع شده - شروع شده", german: "begonnen - begonnen", audio: "27_de.mp3" },
+            { id: 28, persian: "دوره دیروز شروع شد.", german: "Der Kurs hat gestern begonnen.", audio: "28_de.mp3" },
+            { id: 29, persian: "شروع می‌شود - شروع می‌شود", german: "beginnt - beginnt", audio: "29_de.mp3" },
+            { id: 30, persian: "مدرسه ساعت هشت شروع می‌شود.", german: "Die Schule beginnt um acht Uhr.", audio: "30_de.mp3" },
+            { id: 32, persian: "یک دوره را بازدید می‌کنم - یک دوره را بازدید می‌کنم", german: "besuche einen Kurs - besuche einen Kurs", audio: "32_de.mp3" },
+            { id: 33, persian: "من یک دوره زبان آلمانی می‌روم.", german: "Ich besuche einen Deutschkurs.", audio: "33_de.mp3" },
+            { id: 34, persian: "زنگ زده - زنگ زده", german: "angerufen - angerufen", audio: "34_de.mp3" },
+            { id: 35, persian: "من به دوستم زنگ زدم.", german: "Ich habe meine Freundin angerufen.", audio: "35_de.mp3" },
+            { id: 36, persian: "به عنوان اوپِر کار می‌کنم", german: "arbeite als Au-pair", audio: "36_de.mp3" },
+            { id: 37, persian: "من به عنوان اوپِر در مونیخ کار می‌کنم.", german: "Ich arbeite als Au-pair in München.", audio: "37_de.mp3" },
+            { id: 38, persian: "تحویل گرفته - تحویل گرفته", german: "abgeholt - abgeholt", audio: "38_de.mp3" },
+            { id: 39, persian: "من بسته‌ام را تحویل گرفتم.", german: "Ich habe mein Paket abgeholt.", audio: "39_de.mp3" },
+            { id: 40, persian: "دروازه براندنبورگ - دروازه براندنبورگ", german: "das Brandenburger Tor - das Brandenburger Tor", audio: "40_de.mp3" },
+            { id: 41, persian: "دروازه براندنبورگ در برلین است.", german: "Das Brandenburger Tor ist in Berlin.", audio: "41_de.mp3" },
+            { id: 42, persian: "ساکن - ساکن", german: "der Einwohner - der Einwohner", audio: "42_de.mp3" },
+            { id: 43, persian: "برلین ساکنان زیادی دارد.", german: "Berlin hat viele Einwohner.", audio: "43_de.mp3" },
+            { id: 44, persian: "متولد شده - متولد شده", german: "geboren - geboren", audio: "44_de.mp3" },
+            { id: 45, persian: "من در هامبورگ متولد شده‌ام.", german: "Ich bin in Hamburg geboren.", audio: "45_de.mp3" },
+            { id: 46, persian: "آزمون C1 - آزمون C1", german: "die C1-Prüfung - die C1-Prüfung", audio: "46_de.mp3" },
+            { id: 47, persian: "من آزمون C1 را قبول شده‌ام.", german: "Ich habe die C1-Prüfung bestanden.", audio: "47_de.mp3" },
+            { id: 48, persian: "موفق - موفق", german: "erfolgreich - erfolgreich", audio: "48_de.mp3" },
+            { id: 49, persian: "پروژه‌ام موفق بود.", german: "Mein Projekt war erfolgreich.", audio: "49_de.mp3" },
+            { id: 50, persian: "شرکت - شرکت", german: "die Firma - die Firma", audio: "50_de.mp3" },
+            { id: 51, persian: "من در یک شرکت بزرگ کار می‌کنم.", german: "Ich arbeite in einer großen Firma.", audio: "51_de.mp3" },
+            { id: 52, persian: "کمک کرده - کمک کرده", german: "geholfen - geholfen", audio: "52_de.mp3" },
+            { id: 53, persian: "من به دوستم کمک کردم.", german: "Ich habe meinem Freund geholfen.", audio: "53_de.mp3" },
+            { id: 54, persian: "پیشرفت - پیشرفت", german: "der Fortschritt - der Fortschritt", audio: "54_de.mp3" },
+            { id: 55, persian: "پیشرفت من در یادگیری آلمانی خوب است.", german: "Mein Fortschritt im Deutschlernen ist gut.", audio: "55_de.mp3" },
+            { id: 56, persian: "فوق‌العاده می‌دانم - فوق‌العاده می‌دانم", german: "finde ich super - finde ich super", audio: "56_de.mp3" },
+            { id: 57, persian: "یادگیری آلمانی را فوق‌العاده می‌دانم.", german: "Ich finde Deutschlernen super.", audio: "57_de.mp3" },
+            { id: 58, persian: "زود - زود", german: "früh - früh", audio: "58_de.mp3" },
+            { id: 59, persian: "من صبح زود بیدار می‌شوم.", german: "Ich stehe früh auf.", audio: "59_de.mp3" },
+            { id: 60, persian: "جمعه‌ها - جمعه‌ها", german: "freitags - freitags", audio: "60_de.mp3" },
+            { id: 61, persian: "جمعه‌ها به سینما می‌روم.", german: "Freitags gehe ich ins Kino.", audio: "61_de.mp3" },
+            { id: 62, persian: "آزاد - آزاد", german: "frei - frei", audio: "62_de.mp3" },
+            { id: 63, persian: "آخر هفته‌ها آزاد هستم.", german: "Am Wochenende bin ich frei.", audio: "63_de.mp3" },
+            { id: 64, persian: "کشف کردن - کشف کردن", german: "entdecken - entdecken", audio: "64_de.mp3" },
+            { id: 65, persian: "می‌خواهم برلین را کشف کنم.", german: "Ich möchte Berlin entdecken.", audio: "65_de.mp3" },
+            { id: 66, persian: "عکس گرفتن - عکس گرفتن", german: "fotografieren - fotografieren", audio: "66_de.mp3" },
+            { id: 67, persian: "من دوست دارم از جاذبه‌ها عکس بگیرم.", german: "Ich fotografiere gern Sehenswürdigkeiten.", audio: "67_de.mp3" },
+            { id: 68, persian: "پنج بار - پنج بار", german: "fünfmal - fünfmal", audio: "68_de.mp3" },
+            { id: 69, persian: "من پنج بار به آلمان رفته‌ام.", german: "Ich war fünfmal in Deutschland.", audio: "69_de.mp3" },
+            { id: 70, persian: "فوق‌العاده - فوق‌العاده", german: "fantastisch - fantastisch", audio: "70_de.mp3" },
+            { id: 71, persian: "تعطیلات فوق‌العاده بود.", german: "Der Urlaub war fantastisch.", audio: "71_de.mp3" },
+            { id: 72, persian: "آورده - آورده", german: "gebracht - gebracht", audio: "72_de.mp3" },
+            { id: 73, persian: "من یک هدیه آورده‌ام.", german: "Ich habe ein Geschenk gebracht.", audio: "73_de.mp3" },
+            { id: 74, persian: "خوشم می‌آید - خوشم می‌آید", german: "gefällt - gefällt", audio: "74_de.mp3" },
+            { id: 75, persian: "من شهر را دوست دارم.", german: "Mir gefällt die Stadt.", audio: "75_de.mp3" },
+            { id: 76, persian: "دعوت کرده - دعوت کرده", german: "eingeladen - eingeladen", audio: "76_de.mp3" },
+            { id: 77, persian: "من دوستانم را دعوت کرده‌ام.", german: "Ich habe Freunde eingeladen.", audio: "77_de.mp3" },
+            { id: 78, persian: "ازدواج کرده - ازدواج کرده", german: "geheiratet - geheiratet", audio: "78_de.mp3" },
+            { id: 79, persian: "خواهرم ازدواج کرده است.", german: "Meine Schwester hat geheiratet.", audio: "79_de.mp3" },
+            { id: 80, persian: "بگو ببینم!", german: "Erzähl mal!", audio: "80_de.mp3" },
+            { id: 81, persian: "کلبه - کلبه", german: "die Hütte - die Hütte", audio: "81_de.mp3" },
+            { id: 82, persian: "کلبه در کوه‌ها است.", german: "Die Hütte ist in den Bergen.", audio: "82_de.mp3" },
+            { id: 83, persian: "زادگاه - زادگاه", german: "die Heimat - die Heimat", audio: "83_de.mp3" },
+            { id: 84, persian: "زادگاهم زیباست.", german: "Meine Heimat ist schön.", audio: "84_de.mp3" },
+            { id: 85, persian: "گفت‌وگو - گفت‌وگو", german: "das Gespräch - das Gespräch", audio: "85_de.mp3" },
+            { id: 86, persian: "من گفت‌وگوی خوبی داشتم.", german: "Ich hatte ein gutes Gespräch.", audio: "86_de.mp3" },
+            { id: 87, persian: "شنیده - شنیده", german: "gehört - gehört", audio: "87_de.mp3" },
+            { id: 88, persian: "من موسیقی را شنیدم.", german: "Ich habe die Musik gehört.", audio: "88_de.mp3" },
+            { id: 89, persian: "دلیل - دلیل", german: "der Grund - der Grund", audio: "89_de.mp3" },
+            { id: 90, persian: "دلیل مهم است.", german: "Der Grund ist wichtig.", audio: "90_de.mp3" },
+            { id: 91, persian: "آمده - آمده", german: "gekommen - gekommen", audio: "91_de.mp3" },
+            { id: 92, persian: "من دیروز به آلمان آمده‌ام.", german: "Ich bin gestern nach Deutschland gekommen.", audio: "92_de.mp3" },
+            { id: 93, persian: "شهر ارواح - شهر ارواح", german: "die Geisterstadt - die Geisterstadt", audio: "93_de.mp3" },
+            { id: 94, persian: "شهر ارواح جالب است.", german: "Die Geisterstadt ist interessant.", audio: "94_de.mp3" },
+            { id: 95, persian: "سفر کرده - سفر کرده", german: "gereist - gereist", audio: "95_de.mp3" },
+            { id: 96, persian: "من به برلین سفر کرده‌ام.", german: "Ich bin nach Berlin gereist.", audio: "96_de.mp3" },
+            { id: 97, persian: "پایتخت - پایتخت", german: "die Hauptstadt - die Hauptstadt", audio: "97_de.mp3" },
+            { id: 98, persian: "برلین پایتخت آلمان است.", german: "Berlin ist die Hauptstadt von Deutschland.", audio: "98_de.mp3" },
+            { id: 99, persian: "ازدواج کردن - ازدواج کردن", german: "heiraten - heiraten", audio: "99_de.mp3" },
+            { id: 100, persian: "می‌خواهم به‌زودی ازدواج کنم.", german: "Ich möchte bald heiraten.", audio: "100_de.mp3" },
+            { id: 101, persian: "شانس‌های خوب - شانس‌های خوب", german: "gute Chancen - gute Chancen", audio: "101_de.mp3" },
+            { id: 102, persian: "من شانس خوبی در شغلم دارم.", german: "Ich habe gute Chancen im Beruf.", audio: "102_de.mp3" },
+            { id: 103, persian: "فرستاده - فرستاده", german: "geschickt - geschickt", audio: "103_de.mp3" },
+            { id: 104, persian: "من یک نامه فرستادم.", german: "Ich habe einen Brief geschickt.", audio: "104_de.mp3" },
+            { id: 105, persian: "سلام به پراگ", german: "Grüße nach Prag", audio: "105_de.mp3" },
+            { id: 106, persian: "شانس آورده - شانس آورده", german: "Glück gehabt - Glück gehabt", audio: "106_de.mp3" },
+            { id: 107, persian: "من در بازی شانس آوردم.", german: "Ich habe im Spiel Glück gehabt.", audio: "107_de.mp3" },
+            { id: 108, persian: "من موافقم.", german: "Ich bin einverstanden.", audio: "108_de.mp3" },
+            { id: 109, persian: "سالم ماندن - سالم ماندن", german: "gesund bleiben - gesund bleiben", audio: "109_de.mp3" },
+            { id: 110, persian: "می‌خواهم سالم بمانم.", german: "Ich möchte gesund bleiben.", audio: "110_de.mp3" },
+            { id: 111, persian: "پرسیده - پرسیده", german: "gestellt - gestellt", audio: "111_de.mp3" },
+            { id: 112, persian: "من یک سؤال پرسیدم.", german: "Ich habe eine Frage gestellt.", audio: "112_de.mp3" },
+            { id: 113, persian: "پخته - پخته", german: "gekocht - gekocht", audio: "113_de.mp3" },
+            { id: 114, persian: "من شام پختم.", german: "Ich habe Abendessen gekocht.", audio: "114_de.mp3" },
+            { id: 115, persian: "فوت کرده - فوت کرده", german: "gestorben - gestorben", audio: "115_de.mp3" },
+            { id: 116, persian: "او پارسال فوت کرد.", german: "Er ist letztes Jahr gestorben.", audio: "116_de.mp3" },
+            { id: 117, persian: "تکالیف - تکالیف", german: "die Hausaufgaben - die Hausaufgaben", audio: "117_de.mp3" },
+            { id: 118, persian: "من تکالیفم را انجام می‌دهم.", german: "Ich mache meine Hausaufgaben.", audio: "118_de.mp3" },
+            { id: 119, persian: "فروشنده - فروشنده", german: "die Kauffrau - die Kauffrau", audio: "119_de.mp3" },
+            { id: 120, persian: "او یک فروشنده است.", german: "Sie ist eine Kauffrau.", audio: "120_de.mp3" },
+            { id: 121, persian: "رزومه - رزومه", german: "der Lebenslauf - der Lebenslauf", audio: "121_de.mp3" },
+            { id: 122, persian: "من رزومه‌ام را می‌نویسم.", german: "Ich schreibe meinen Lebenslauf.", audio: "122_de.mp3" },
+            { id: 123, persian: "کسل‌کننده - کسل‌کننده", german: "langweilig - langweilig", audio: "123_de.mp3" },
+            { id: 124, persian: "فیلم کسل‌کننده بود.", german: "Der Film war langweilig.", audio: "124_de.mp3" },
+            { id: 125, persian: "تصحیح کردن - تصحیح کردن", german: "korrigieren - korrigieren", audio: "125_de.mp3" },
+            { id: 126, persian: "من متن را تصحیح می‌کنم.", german: "Ich korrigiere den Text.", audio: "126_de.mp3" },
+            { id: 127, persian: "ارتباط - ارتباط", german: "der Kontakt - der Kontakt", audio: "127_de.mp3" },
+            { id: 128, persian: "من با او ارتباطی ندارم.", german: "Ich habe keinen Kontakt zu ihm.", audio: "128_de.mp3" },
+            { id: 129, persian: "لیست دوره‌ها - لیست دوره‌ها", german: "die Kursliste - die Kursliste", audio: "129_de.mp3" },
+            { id: 130, persian: "من لیست دوره‌ها را می‌خوانم.", german: "Ich lese die Kursliste.", audio: "130_de.mp3" },
+            { id: 131, persian: "آشنا شده - آشنا شده", german: "kennengelernt - kennengelernt", audio: "131_de.mp3" },
+            { id: 132, persian: "من دیروز او را ملاقات کردم.", german: "Ich habe ihn gestern kennengelernt.", audio: "132_de.mp3" },
+            { id: 133, persian: "مصاحبه‌ها - مصاحبه‌ها", german: "die Interviews - die Interviews", audio: "133_de.mp3" },
+            { id: 134, persian: "من دو مصاحبه انجام داده‌ام.", german: "Ich habe zwei Interviews geführt.", audio: "134_de.mp3" },
+            { id: 135, persian: "درباره کسی پرسیدن - درباره کسی پرسیدن", german: "nach jemandem fragen - nach jemandem fragen", audio: "135_de.mp3" },
+            { id: 136, persian: "من درباره دوستم سؤال می‌کنم.", german: "Ich frage nach meinem Freund.", audio: "136_de.mp3" },
+            { id: 137, persian: "همنام - همنام", german: "der Namensvetter - der Namensvetter", audio: "137_de.mp3" },
+            { id: 138, persian: "او همنام من است.", german: "Er ist mein Namensvetter.", audio: "138_de.mp3" },
+            { id: 139, persian: "بیماران - بیماران", german: "die Patienten - die Patienten", audio: "139_de.mp3" },
+            { id: 140, persian: "پزشک به بیماران کمک می‌کند.", german: "Der Arzt hilft den Patienten.", audio: "140_de.mp3" },
+            { id: 141, persian: "اندازه‌گیری کردن - اندازه‌گیری کردن", german: "messen - messen", audio: "141_de.mp3" },
+            { id: 142, persian: "من دما را اندازه می‌گیرم.", german: "Ich messe die Temperatur.", audio: "142_de.mp3" },
+            { id: 143, persian: "مواد غذایی - مواد غذایی", german: "die Lebensmittel - die Lebensmittel", audio: "143_de.mp3" },
+            { id: 144, persian: "من مواد غذایی را از سوپرمارکت می‌خرم.", german: "Ich kaufe Lebensmittel im Supermarkt.", audio: "144_de.mp3" },
+            { id: 145, persian: "همیشه بردن - همیشه بردن", german: "immer mitnehmen - immer mitnehmen", audio: "145_de.mp3" },
+            { id: 146, persian: "من همیشه گوشی‌ام را با خودم می‌برم.", german: "Ich nehme mein Handy immer mit.", audio: "146_de.mp3" },
+            { id: 147, persian: "نام مکان - نام مکان", german: "der Ortsname - der Ortsname", audio: "147_de.mp3" },
+            { id: 148, persian: "نام مکان مونیخ است.", german: "Der Ortsname ist München.", audio: "148_de.mp3" },
+            { id: 149, persian: "در کوه‌ها قرار دارد - در کوه‌ها قرار دارد", german: "liegt in den Bergen - liegt in den Bergen", audio: "149_de.mp3" },
+            { id: 150, persian: "شهر در کوه‌ها قرار دارد.", german: "Die Stadt liegt in den Bergen.", audio: "150_de.mp3" },
+            { id: 151, persian: "دیگ ذوب - دیگ ذوب", german: "der Melting Pot - der Melting Pot", audio: "151_de.mp3" },
+            { id: 152, persian: "نیویورک یک دیگ ذوب است.", german: "New York ist ein Melting Pot.", audio: "152_de.mp3" },
+            { id: 153, persian: "در آلمان قرار دارد - در آلمان قرار دارد", german: "liegt in Deutschland - liegt in Deutschland", audio: "153_de.mp3" },
+            { id: 154, persian: "برلین در آلمان قرار دارد.", german: "Berlin liegt in Deutschland.", audio: "154_de.mp3" },
+            { id: 155, persian: "زبان مشترک - زبان مشترک", german: "die Lingua franca - die Lingua franca", audio: "155_de.mp3" },
+            { id: 156, persian: "انگلیسی زبان مشترک است.", german: "Englisch ist die Lingua franca.", audio: "156_de.mp3" },
+            { id: 157, persian: "می‌خواهم با تو ازدواج کنم.", german: "Ich möchte dich heiraten.", audio: "157_de.mp3" },
+            { id: 158, persian: "توسعه‌دهنده نرم‌افزار - توسعه‌دهنده نرم‌افزار", german: "der Software-Entwickler - der Software-Entwickler", audio: "158_de.mp3" },
+            { id: 159, persian: "او یک توسعه‌دهنده نرم‌افزار است.", german: "Er ist ein Software-Entwickler.", audio: "159_de.mp3" },
+            { id: 160, persian: "کار - کار", german: "die Stelle - die Stelle", audio: "160_de.mp3" },
+            { id: 161, persian: "من به دنبال یک شغل جدید هستم.", german: "Ich suche eine neue Stelle.", audio: "161_de.mp3" },
+            { id: 162, persian: "خوداشتغال - خوداشتغال", german: "selbstständig - selbstständig", audio: "162_de.mp3" },
+            { id: 163, persian: "من به‌صورت خوداشتغال کار می‌کنم.", german: "Ich arbeite selbstständig.", audio: "163_de.mp3" },
+            { id: 164, persian: "کارآموزی - کارآموزی", german: "das Praktikum - das Praktikum", audio: "164_de.mp3" },
+            { id: 165, persian: "من در یک شرکت کارآموزی می‌کنم.", german: "Ich mache ein Praktikum in einer Firma.", audio: "165_de.mp3" },
+            { id: 166, persian: "خود را معرفی کردن - خود را معرفی کردن", german: "sich vorstellen - sich vorstellen", audio: "166_de.mp3" },
+            { id: 167, persian: "من خودم را در دوره معرفی می‌کنم.", german: "Ich stelle mich im Kurs vor.", audio: "167_de.mp3" },
+            { id: 168, persian: "لطفاً خودت را معرفی کن.", german: "Stellst du dich bitte vor?", audio: "168_de.mp3" },
+            { id: 169, persian: "زمین بازی - زمین بازی", german: "der Spielplatz - der Spielplatz", audio: "169_de.mp3" },
+            { id: 170, persian: "بچه‌ها در زمین بازی هستند.", german: "Die Kinder sind auf dem Spielplatz.", audio: "170_de.mp3" },
+            { id: 171, persian: "شریک زبانی - شریک زبانی", german: "der Sprachpartner - der Sprachpartner", audio: "171_de.mp3" },
+            { id: 172, persian: "من یک شریک زبانی پیدا کرده‌ام.", german: "Ich habe einen Sprachpartner gefunden.", audio: "172_de.mp3" },
+            { id: 173, persian: "مرکز زبان - مرکز زبان", german: "das Sprachenzentrum - das Sprachenzentrum", audio: "173_de.mp3" },
+            { id: 174, persian: "من در مرکز زبان یاد می‌گیرم.", german: "Ich lerne im Sprachenzentrum.", audio: "174_de.mp3" },
+            { id: 175, persian: "درس خواندن - درس خواندن", german: "studieren - studieren", audio: "175_de.mp3" },
+            { id: 176, persian: "من در دانشگاه درس می‌خوانم.", german: "Ich studiere an der Universität.", audio: "176_de.mp3" },
+            { id: 177, persian: "درس خوانده - درس خوانده", german: "studiert - studiert", audio: "177_de.mp3" },
+            { id: 178, persian: "او پزشکی خوانده است.", german: "Sie hat Medizin studiert.", audio: "178_de.mp3" },
+            { id: 179, persian: "فیزیک می‌خوانم", german: "studiere Physik", audio: "179_de.mp3" },
+            { id: 180, persian: "دوره فوق فشرده - دوره فوق فشرده", german: "der Super-Intensivkurs - der Super-Intensivkurs", audio: "180_de.mp3" },
+            { id: 181, persian: "من یک دوره فوق فشرده می‌روم.", german: "Ich besuche einen Super-Intensivkurs.", audio: "181_de.mp3" },
+            { id: 182, persian: "ببینم - ببینم", german: "mal sehen - mal sehen", audio: "182_de.mp3" },
+            { id: 183, persian: "ببینم آیا وقت دارم یا نه.", german: "Mal sehen, ob ich Zeit habe.", audio: "183_de.mp3" },
+            { id: 184, persian: "جاذبه‌ها - جاذبه‌ها", german: "die Sehenswürdigkeiten - die Sehenswürdigkeiten", audio: "184_de.mp3" },
+            { id: 185, persian: "من از جاذبه‌های برلین بازدید می‌کنم.", german: "Ich besuche die Sehenswürdigkeiten in Berlin.", audio: "185_de.mp3" },
+            { id: 186, persian: "جمع کردن - جمع کردن", german: "sammeln - sammeln", audio: "186_de.mp3" },
+            { id: 187, persian: "من سکه‌های قدیمی جمع می‌کنم.", german: "Ich sammle alte Münzen.", audio: "187_de.mp3" },
+            { id: 188, persian: "کد پستی - کد پستی", german: "die Postleitzahl - die Postleitzahl", audio: "188_de.mp3" },
+            { id: 189, persian: "کد پستی 80331 است.", german: "Die Postleitzahl ist 80331.", audio: "189_de.mp3" },
+            { id: 190, persian: "توصیه کردن - توصیه کردن", german: "raten - raten", audio: "190_de.mp3" },
+            { id: 191, persian: "به تو توصیه می‌کنم زود بیایی.", german: "Ich rate dir, früh zu kommen.", audio: "191_de.mp3" },
+            { id: 192, persian: "فوراً - فوراً", german: "sofort - sofort", audio: "192_de.mp3" },
+            { id: 193, persian: "من فوراً می‌آیم.", german: "Ich komme sofort.", audio: "193_de.mp3" },
+            { id: 194, persian: "از کی - از کی", german: "seit wann - seit wann", audio: "194_de.mp3" },
+            { id: 195, persian: "از کی آلمانی یاد می‌گیری؟", german: "Seit wann lernst du Deutsch?", audio: "195_de.mp3" },
+            { id: 196, persian: "من تازه دیپلم گرفته‌ام.", german: "ich habe ja gerade erst Abitur gemacht.", audio: "196_de.mp3" },
+            { id: 197, persian: "به‌زودی به آلمان می‌روم.", german: "Bald fahre ich nach Deutschland.", audio: "197_de.mp3" },
+            { id: 198, persian: "اینجا چه کار می‌کنی؟", german: "was machst du hier so?", audio: "198_de.mp3" },
+            { id: 199, persian: "پول توجیبی - پول توجیبی", german: "das Taschengeld - das Taschengeld", audio: "199_de.mp3" },
+            { id: 200, persian: "من از والدینم پول توجیبی می‌گیرم.", german: "Ich bekomme Taschengeld von meinen Eltern.", audio: "200_de.mp3" },
+            { id: 201, persian: "جهان - جهان", german: "die Welt - die Welt", audio: "201_de.mp3" },
+            { id: 202, persian: "می‌خواهم دنیا را ببینم.", german: "Ich möchte die Welt sehen.", audio: "202_de.mp3" },
+            { id: 203, persian: "جهان وسیع - جهان وسیع", german: "weite Welt - weite Welt", audio: "203_de.mp3" },
+            { id: 204, persian: "من به دنیای وسیع سفر می‌کنم.", german: "Ich reise in die weite Welt.", audio: "204_de.mp3" },
+            { id: 205, persian: "موضوع - موضوع", german: "das Thema - das Thema", audio: "205_de.mp3" },
+            { id: 206, persian: "موضوع جالب است.", german: "Das Thema ist interessant.", audio: "206_de.mp3" },
+            { id: 207, persian: "انتخاب کردن - انتخاب کردن", german: "wählen - wählen", audio: "207_de.mp3" },
+            { id: 208, persian: "من بهترین دوره را انتخاب می‌کنم.", german: "Ich wähle den besten Kurs.", audio: "208_de.mp3" },
+            { id: 209, persian: "دانشگاه فنی - دانشگاه فنی", german: "die Technische Universität - die Technische Universität", audio: "209_de.mp3" },
+            { id: 210, persian: "من در دانشگاه فنی درس می‌خوانم.", german: "Ich studiere an der Technischen Universität.", audio: "210_de.mp3" },
+            { id: 211, persian: "مدرسه آموزش بزرگسالان - مدرسه آموزش بزرگسالان", german: "die Volkshochschule - die Volkshochschule", audio: "211_de.mp3" },
+            { id: 212, persian: "من در مدرسه آموزش بزرگسالان یاد می‌گیرم.", german: "Ich lerne an der Volkshochschule.", audio: "212_de.mp3" },
+            { id: 213, persian: "سنت - سنت", german: "die Tradition - die Tradition", audio: "213_de.mp3" },
+            { id: 214, persian: "سنت قدیمی است.", german: "Die Tradition ist alt.", audio: "214_de.mp3" },
+            { id: 215, persian: "تدریس کردن - تدریس کردن", german: "unterrichten - unterrichten", audio: "215_de.mp3" },
+            { id: 216, persian: "من آلمانی تدریس می‌کنم.", german: "Ich unterrichte Deutsch.", audio: "216_de.mp3" },
+            { id: 217, persian: "غذا - غذا", german: "die Verpflegung - die Verpflegung", audio: "217_de.mp3" },
+            { id: 218, persian: "غذا خوب است.", german: "Die Verpflegung ist gut.", audio: "218_de.mp3" },
+            { id: 219, persian: "فهمیده - فهمیده", german: "verstanden - verstanden", audio: "219_de.mp3" },
+            { id: 220, persian: "من تکلیف را فهمیدم.", german: "Ich habe die Aufgabe verstanden.", audio: "220_de.mp3" },
+            { id: 221, persian: "بعداً - بعداً", german: "später - später", audio: "221_de.mp3" },
+            { id: 222, persian: "من بعداً می‌آیم.", german: "Ich komme später.", audio: "222_de.mp3" },
+            { id: 223, persian: "دوباره - دوباره", german: "wieder - wieder", audio: "223_de.mp3" },
+            { id: 224, persian: "دوباره تو را می‌بینم.", german: "Ich sehe dich wieder.", audio: "224_de.mp3" },
+            { id: 225, persian: "در خانه - در خانه", german: "zu Hause - zu Hause", audio: "225_de.mp3" },
+            { id: 226, persian: "من در خانه‌ام.", german: "Ich bin zu Hause.", audio: "226_de.mp3" },
+            { id: 227, persian: "راضی - راضی", german: "zufrieden - zufrieden", audio: "227_de.mp3" },
+            { id: 228, persian: "من از دوره راضی‌ام.", german: "Ich bin mit dem Kurs zufrieden.", audio: "228_de.mp3" }
+        ];
+
+        function createRow(sentence) {
+            const row = document.createElement('div');
+            row.className = 'row';
+            row.innerHTML = `
+                <div class="number">${sentence.id}</div>
+                <div class="persian">${sentence.persian}</div>
+                <div class="german">${sentence.german}</div>
+                <audio class="audio-player" controls>
+                    <source src="./${sentence.id}/${sentence.audio}" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            `;
+            return row;
+        }
+
+        const playlist = document.getElementById('playlist');
+        sentences.forEach(sentence => {
+            playlist.appendChild(createRow(sentence));
+        });
+    </script>
+</body>
+</html>
