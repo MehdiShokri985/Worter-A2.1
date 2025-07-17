@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>پلی لیست جملات فارسی و آلمانی</title>
-    <style>
+     <style>
         * {
             margin: 0;
             padding: 0;
@@ -38,15 +38,15 @@
         }
 
        .row {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            background-color: #2c3e50;
-            padding: 10px;
-            border-radius: 8px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            gap: 5px;
-        }
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        background-color: #2c3e50;
+        padding: 10px;
+        border-radius: 8px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        gap: 5px;
+    }
 
 
         .row:hover {
@@ -54,35 +54,38 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
-       .number {
-            font-size: 0.95rem;
-            color: #ffc107;
-            font-weight: bold;
-        }
-        
-        .persian {
-            padding: 0 5px;
-            font-size: 0.95rem;
-            width: 100%;
-        }
+        .number {
+                font-size: 0.95rem;
+                color: #ffc107;
+                font-weight: bold;
+            }
 
-        .german {
-            text-align: left;
-            direction: ltr;
-            padding: 0 10px;
-            font-size: clamp(0.85rem, 3.5vw, 0.95rem);
-            color: #ccc;
-        }
+            .persian {
+                padding: 0 5px;
+                font-size: 0.95rem;
+                width: 100%;
+            }
 
-        
+            .german {
+    text-align: left;
+    direction: ltr;
+    padding: 0 10px;
+    font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+    color: #ccc;
+}
+
+
         .play-btn {
-            margin-top: 5px;
-            align-self: flex-end;      /* در جهت rtl، flex-end یعنی سمت چپ */
-            margin-left: 0;
-            margin-right: auto;        /* دکمه را به چپ می‌چسباند */
-            direction: ltr;            /* اگر متن دکمه انگلیسی باشد (مثل "Play") */
-        }
-          .play-btn {
+    margin-top: 5px;
+    align-self: flex-end;      /* در جهت rtl، flex-end یعنی سمت چپ */
+    margin-left: 0;
+    margin-right: auto;        /* دکمه را به چپ می‌چسباند */
+    direction: ltr;            /* اگر متن دکمه انگلیسی باشد (مثل "Play") */
+}
+
+
+
+        .play-btn {
             background-color: #ffc107;
             color: #1a252f;
             border: none;
@@ -92,13 +95,16 @@
             font-size: clamp(0.8rem, 3vw, 0.9rem);
             font-weight: bold;
             transition: background-color 0.3s ease, transform 0.2s ease;
-            margin-top: 5px;  
-            align-self: flex-end;      /* در جهت rtl، flex-end یعنی سمت چپ */
-            margin-left: 0;
-            margin-right: auto;        /* دکمه را به چپ می‌چسباند */
-            direction: ltr;            /* اگر متن دکمه انگلیسی باشد (مثل "Play") */
+           
+            margin-top: 5px;
+               
+    align-self: flex-end;      /* در جهت rtl، flex-end یعنی سمت چپ */
+    margin-left: 0;
+    margin-right: auto;        /* دکمه را به چپ می‌چسباند */
+    direction: ltr;            /* اگر متن دکمه انگلیسی باشد (مثل "Play") */
 
         }
+
         .play-btn:hover {
             background-color: #e0a800;
             transform: scale(1.05);
@@ -109,32 +115,29 @@
             color: #fff;
         }
 
-      @media (min-width: 768px) {
-            .row {
-                display: grid;
-                grid-template-columns: 60px 1fr 1fr 100px;
-                align-items: center;
-                gap: 0;
-            }
-        
-             .play-btn {
-              align-self: center;
-              margin-left: 0;
-              margin-right: 0;
-            }
+   @media (min-width: 768px) {
+    .row {
+        display: grid;
+        grid-template-columns: 60px 1fr 1fr 100px;
+        align-items: center;
+        gap: 0;
+    }
 
-          .german {
-                text-align: left;
-                direction: ltr;
-                padding: 0 10px;
-                font-size: clamp(0.85rem, 3.5vw, 0.95rem);
-                color: #ccc;
-            }
+      .play-btn {
+        align-self: center;
+        margin-left: 0;
+        margin-right: 0;
+    }
 
-        }
+    .german {
+    text-align: left;
+    direction: ltr;
+    padding: 0 10px;
+    font-size: clamp(0.85rem, 3.5vw, 0.95rem);
+    color: #ccc;
+}
 
-
-    
+}
 
 
         @media (min-width: 1024px) {
