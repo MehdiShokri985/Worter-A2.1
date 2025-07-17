@@ -98,33 +98,20 @@
             color: #fff;
         }
 
-        @media (min-width: 768px) {
-            .container {
-                max-width: 800px;
+      @media (min-width: 768px) {
+            .row {
+                display: grid;
+                grid-template-columns: 60px 1fr 1fr 100px;
+                align-items: center;
+                gap: 0;
             }
-
-             .row {
-        display: grid;
-        grid-template-columns: 60px 1fr 1fr 100px;
-        align-items: center;
-        gap: 0;
-    }
-
-            .german {
-                display: block;
-                padding: 0 10px;
-                font-size: clamp(0.9rem, 2.5vw, 1rem);
-            }
-
+        
             .play-btn {
-        align-self: center;
-        margin-top: 0;
-    }
-
-            h1 {
-                font-size: 2.2rem;
+                align-self: center;
+                margin-top: 0;
             }
         }
+
 
     
 
