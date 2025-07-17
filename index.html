@@ -66,26 +66,30 @@
             width: 100%;
         }
         
-      
-       .play-btn {
-        background-color: #ffc107;
-        color: #1a252f;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 20px;
-        cursor: pointer;
-        font-size: clamp(0.8rem, 3vw, 0.9rem);
-        font-weight: bold;
-        transition: background-color 0.3s ease, transform 0.2s ease;
+        .play-btn {
+            margin-top: 5px;
+            align-self: flex-end;      /* در جهت rtl، flex-end یعنی سمت چپ */
+            margin-left: 0;
+            margin-right: auto;        /* دکمه را به چپ می‌چسباند */
+            direction: ltr;            /* اگر متن دکمه انگلیسی باشد (مثل "Play") */
+        }
+          .play-btn {
+            background-color: #ffc107;
+            color: #1a252f;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: clamp(0.8rem, 3vw, 0.9rem);
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            margin-top: 5px;  
+            align-self: flex-end;      /* در جهت rtl، flex-end یعنی سمت چپ */
+            margin-left: 0;
+            margin-right: auto;        /* دکمه را به چپ می‌چسباند */
+            direction: ltr;            /* اگر متن دکمه انگلیسی باشد (مثل "Play") */
 
-        margin-top: 5px;
-
-        align-self: flex-end; /* در جهت rtl، flex-end یعنی سمت چپ */
-        margin-left: 0;
-        margin-right: auto; /* دکمه را به چپ می‌چسباند */
-        direction: ltr; /* اگر متن دکمه انگلیسی باشد (مثل "Play") */
-      }
-
+        }
         .play-btn:hover {
             background-color: #e0a800;
             transform: scale(1.05);
